@@ -1,10 +1,18 @@
 [tool.poetry]
-name = "project1-gorshkov-s"
+ packages = [
+     { include = "labyrinth_game" },
+ ]
+ name = "project1_Gorshkov_Sergey_M25-555"
 version = "0.1.0"
 description = ""
 authors = ["Sergey Gorshkov <Dantistsjohn@mail.ru>"]
 readme = "README.md"
 
+
+[tool.poetry.scripts]
+project = "labyrinth_game.main:main" 
+
+ 
 [tool.poetry.dependencies]
 python = "^3.12"
 
