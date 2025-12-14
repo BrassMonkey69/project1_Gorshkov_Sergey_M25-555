@@ -1,4 +1,10 @@
 install:
 	poetry install
 project:
-	poetry run python -m labyrinth_game.main
+	poetry run project
+build:
+	poetry build
+publish:
+	poetry publish --dry-run
+package-install:
+	python3 -m pip install dist/*.whl
