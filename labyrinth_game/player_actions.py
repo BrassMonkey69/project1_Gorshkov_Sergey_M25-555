@@ -13,7 +13,6 @@ def show_inventory(game_state):
     else:
         print("\nВаш инвентарь пуст.")
           
-#пытаюсь сделать 2.2 п.4
 def get_input(prompt="> "):
     #Запрашивает ввод у пользователя с обработкой ошибок.
     try:

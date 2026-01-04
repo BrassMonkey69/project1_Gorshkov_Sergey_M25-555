@@ -55,10 +55,6 @@ def main():
     while not game_state['game_over']:
         command = get_input("> ")  # Считываем команду
         process_command(game_state, command)  # Обрабатываем
-    # Основной игровой цикл
-#    while not game_state['game_over']:
-#        process_command(game_state, command)
-
 
 if __name__ == "__main__":
     main()
