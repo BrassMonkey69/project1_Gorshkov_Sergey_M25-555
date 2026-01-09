@@ -1,5 +1,7 @@
 from labyrinth_game.constants import ROOMS
 from labyrinth_game.utils import describe_current_room
+from labyrinth_game.utils import solve_puzzle
+from labyrinth_game.utils import attempt_open_treasure
 from labyrinth_game.player_actions import show_inventory
 from labyrinth_game.player_actions import get_input
 from labyrinth_game.player_actions import move_player
@@ -23,11 +25,15 @@ def process_command(game_state, command):
                 move_player(game_state, arg)
             else:
                 print("Укажите направление (например, go north).")
+        case 'solve':
+            solve_puzzle(game_state)
         case 'take' | 'взять':
             if arg:
                 take_item(game_state, arg)
             else:
                 print("Укажите предмет (например, take torch).")
+        case 'open' | 'открыть':
+            attempt_open_treasure(game_state)
         case 'use' | 'использовать':
             if arg:
                 use_item(game_state, arg)
