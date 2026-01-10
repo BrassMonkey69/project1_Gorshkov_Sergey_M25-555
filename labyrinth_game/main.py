@@ -14,6 +14,8 @@ def process_command(game_state, command):
     parts = command.split(' ', 1)
     action = parts[0]
     arg = parts[1] if len(parts) > 1 else None
+    current_room = game_state['current_room']
+    room_data = ROOMS[current_room]
 
     match action:
         case 'look' | 'l':
@@ -24,9 +26,12 @@ def process_command(game_state, command):
             if arg:
                 move_player(game_state, arg)
             else:
-                print("Укажите направление (например, go north).")
+                print("Укажите направление (например, go north).")        
         case 'solve':
-            solve_puzzle(game_state)
+            if 'treasure_chest' not in room_data['items']: #проверка нахождения в комнате с сокровищем (treasure_chest)            
+                solve_puzzle(game_state)
+            else:
+                attempt_open_treasure(game_state) #срабатывает при нахождении с сокровищами          
         case 'take' | 'взять':
             if arg:
                 take_item(game_state, arg)
