@@ -2,16 +2,17 @@ from labyrinth_game.constants import ROOMS
 from labyrinth_game.utils import describe_current_room
 from labyrinth_game.utils import solve_puzzle
 from labyrinth_game.utils import attempt_open_treasure
+from labyrinth_game.utils import show_help
 from labyrinth_game.player_actions import show_inventory
 from labyrinth_game.player_actions import get_input
 from labyrinth_game.player_actions import move_player
 from labyrinth_game.player_actions import take_item
 from labyrinth_game.player_actions import use_item
 
-def process_command(game_state, command):
+def process_command(game_state, command_line):
     """Обрабатывает команду игрока."""
      #Обрабатывает команду игрока.
-    parts = command.split(' ', 1)
+    parts = command_line.split(' ', 1)
     action = parts[0]
     arg = parts[1] if len(parts) > 1 else None
     current_room = game_state['current_room']
@@ -32,14 +33,14 @@ def process_command(game_state, command):
                 solve_puzzle(game_state)
             else:
                 attempt_open_treasure(game_state) #срабатывает при нахождении с сокровищами          
-        case 'take' | 'взять':
+        case 'take':
             if arg:
                 take_item(game_state, arg)
             else:
                 print("Укажите предмет (например, take torch).")
-        case 'open' | 'открыть':
+        case 'open':
             attempt_open_treasure(game_state)
-        case 'use' | 'использовать':
+        case 'use':
             if arg:
                 use_item(game_state, arg)
             else:
@@ -47,6 +48,8 @@ def process_command(game_state, command):
         case 'quit' | 'q' | 'exit':
             game_state['game_over'] = True
             print("Жалкая попытка! Ничего, в следующий раз повезет!")
+        case 'help':
+            show_help()
         case _:
             print("Неизвестная команда. Попробуйте: look, inventory, go, take, use, quit.")
             
@@ -64,8 +67,8 @@ def main():
     describe_current_room(game_state)
     
     while not game_state['game_over']:
-        command = get_input("> ")  # Считываем команду
-        process_command(game_state, command)  # Обрабатываем
+        command_line = get_input("> ")  # Считываем команду
+        process_command(game_state, command_line)  # Обрабатываем
 
 if __name__ == "__main__":
     main()
