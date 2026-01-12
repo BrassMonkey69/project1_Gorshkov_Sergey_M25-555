@@ -3,12 +3,14 @@ from labyrinth_game.utils import describe_current_room
 from labyrinth_game.utils import solve_puzzle
 from labyrinth_game.utils import attempt_open_treasure
 from labyrinth_game.utils import show_help
+from labyrinth_game.utils import pseudo_random
 from labyrinth_game.player_actions import show_inventory
 from labyrinth_game.player_actions import get_input
 from labyrinth_game.player_actions import move_player
 from labyrinth_game.player_actions import take_item
 from labyrinth_game.player_actions import use_item
 
+        
 def process_command(game_state, command_line):
     """Обрабатывает команду игрока."""
      #Обрабатывает команду игрока.
@@ -51,7 +53,7 @@ def process_command(game_state, command_line):
         case 'help':
             show_help()
         case _:
-            print("Неизвестная команда. Попробуйте: look, inventory, go, take, use, quit.")
+            print("Неизвестная команда. Попробуйте: help, look, inventory, go, take, use, quit.")
             
 def main():
     #создание начального состояния игры
@@ -62,10 +64,15 @@ def main():
         'steps_taken': 0 # Количество шагов
         }
     # Приветственное сообщение
-    print("Добро пожаловать в Лабиринт сокровищ!\n")
+    print("\nДобро пожаловать в Лабиринт сокровищ!\n")
     # Описываем стартовую комнату
     describe_current_room(game_state)
     
+    print("Тестирование pseudo_random:") #потому уберу тестирование
+    for i in range(5):
+        result = pseudo_random(i, 10)
+        print(f"seed={i} → {result}")    
+            
     while not game_state['game_over']:
         command_line = get_input("> ")  # Считываем команду
         process_command(game_state, command_line)  # Обрабатываем

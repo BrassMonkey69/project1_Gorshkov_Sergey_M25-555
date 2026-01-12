@@ -1,5 +1,5 @@
 from labyrinth_game.constants import ROOMS
-#from labyrinth_game.player_actions import get_input
+import math
 
 def describe_current_room(game_state):
     """
@@ -119,3 +119,34 @@ def show_help():
     print("  quit/exit/q     - выйти из игры")
     print("  help            - показать это сообщение")
     print("  open            - попытка открыть сундук сокровищ")
+    
+def pseudo_random(seed, modulo):
+    """
+    Генерирует псевдослучайное целое число в диапазоне [0, modulo) на основе seed.
+    
+    Использует детерминированный алгоритм на основе синуса для предсказуемых результатов.
+    
+    Args:
+        seed (int): начальное значение (например, количество шагов)
+        modulo (int): верхняя граница диапазона (результат будет < modulo)
+    Returns:
+        int: число в диапазоне [0, modulo)
+    """
+    # Шаг 1: вычисляем синус от seed * константа_1
+    value = math.sin(seed * 12.9898)
+    
+    
+    # Шаг 2: умножаем на константу_2 для «размазывания» значений
+    value *= 43758.5453
+    
+    
+    # Шаг 3: выделяем дробную часть (x - целая часть x)
+    fractional_part = value - math.floor(value)
+    
+    
+    # Шаг 4: приводим к диапазону [0, modulo)
+    scaled = fractional_part * modulo
+    
+    
+    # Шаг 5: отбрасываем дробную часть, возвращаем целое
+    return int(scaled)
