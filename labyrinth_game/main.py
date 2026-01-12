@@ -69,7 +69,7 @@ def main():
     describe_current_room(game_state)
     
     print("Тестирование pseudo_random:") #потому уберу тестирование
-    for i in range(5):
+    for i in range(10):
         result = pseudo_random(i, 10)
         print(f"seed={i} → {result}")    
             

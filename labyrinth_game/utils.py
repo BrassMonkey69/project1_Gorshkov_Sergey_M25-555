@@ -1,6 +1,7 @@
 from labyrinth_game.constants import ROOMS
 import math
 
+
 def describe_current_room(game_state):
     """
     Выводит подробное описание текущей комнаты на основе game_state.
@@ -33,6 +34,7 @@ def describe_current_room(game_state):
     else:
         print("\nКажется, здесь есть загадка (используйте команду solve).")
               
+
 def solve_puzzle(game_state):
     """Позволяет игроку решить загадку в текущей комнате."""
     current_room = game_state['current_room']
@@ -59,6 +61,7 @@ def solve_puzzle(game_state):
     else:
         print("Неверно. Попробуйте снова.")
        
+
 def attempt_open_treasure(game_state):
     """Попытка открыть сундук в treasure_room."""
     current_room = game_state['current_room']
@@ -107,6 +110,7 @@ def attempt_open_treasure(game_state):
             print("Неверный код. Сундук остаётся запертым.")
     if choice == 'нет':
         print("Вы отступаете от сундука.")
+  
     
 def show_help():
     print("\nДоступные команды:")
@@ -119,6 +123,7 @@ def show_help():
     print("  quit/exit/q     - выйти из игры")
     print("  help            - показать это сообщение")
     print("  open            - попытка открыть сундук сокровищ")
+  
     
 def pseudo_random(seed, modulo):
     """
@@ -137,7 +142,7 @@ def pseudo_random(seed, modulo):
     
     
     # Шаг 2: умножаем на константу_2 для «размазывания» значений
-    value *= 43758.5453
+    value *= 437578.5499
     
     
     # Шаг 3: выделяем дробную часть (x - целая часть x)
@@ -150,6 +155,7 @@ def pseudo_random(seed, modulo):
     
     # Шаг 5: отбрасываем дробную часть, возвращаем целое
     return int(scaled)
+
 
 def trigger_trap(game_state):
     """
@@ -182,3 +188,53 @@ def trigger_trap(game_state):
             game_state['game_over'] = True
         else:
             print("Вы чудом устояли на ногах! Ловушка не нанесла вреда.")
+
+
+def random_event(game_state):
+    """
+    Генерирует случайное событие при перемещении игрока.
+    
+    С вероятностью ~10% происходит одно из трёх событий:
+    - находка монеты;
+    - испуг от шороха;
+    - срабатывание ловушки в trap_room (при условиях).
+    
+    Args:
+        game_state (dict): состояние игры (инвентарь, комната, шаги и т.д.)
+    """
+    steps = game_state['steps_taken']
+    
+    # Шаг 1. Проверяем, произойдёт ли событие вообще (вероятность ~10 %)
+    event_roll = pseudo_random(steps, 10)
+    if event_roll != 0:
+        return  # Событие не произошло, выходим
+
+    # Шаг 2. Выбираем тип события (0–2)
+    event_type = pseudo_random(steps + 1, 3)
+
+    current_room = game_state['current_room']
+    room_data = ROOMS[current_room]
+
+    match event_type:
+        case 0:
+            # Сценарий 1: Находка монеты
+            print("Вы заметили на полу блестящую монетку!")
+            room_data['items'].append('coin')
+            print("Монета добавлена в комнату.")
+
+        case 1:
+            # Сценарий 2: Испуг от шороха
+            print("Откуда‑то доносится странный шорох...")
+            if 'sword' in game_state['player_inventory']:
+                print("Вы выхватываете меч — шорох затихает. Похоже, вы отпугнули существо.")
+            elif 'crossbow' in game_state['player_inventory']:
+                print('Вы достаете арбалет и стеляете в темноту единственным болтом... Похоже, Вы отпугнули существо, но арбалет больше не поможет, Вы выбрасываете его')
+                game_state['player_inventory'].remove('crossbow')
+        case 2:
+            # Сценарий 3: Срабатывание ловушки в trap_room
+            if current_room == 'trap_room' and 'torch' not in game_state['player_inventory']:
+                print("Пол под вами заскрипел... Кажется, вы активировали ловушку!")
+                trigger_trap(game_state)
+            else:
+                # Если условия не выполнены, просто сообщаем о странном ощущении
+                print("Вам показалось, что пол дрогнул... Но ничего не произошло.")
