@@ -54,7 +54,7 @@ def solve_puzzle(game_state):
                     
         elif print("Правильно! Вы решили загадку."):
             room_data['puzzle'] = None  # убираем загадку
-            game_state['steps_taken'] += 10  # награда за решение, надо додумать что-то нормальное
+            game_state['steps_taken'] += 1  # награда за решение, надо додумать что-то нормальное
             print("Вы получили бонус за решение загадки!")
     else:
         print("Неверно. Попробуйте снова.")
@@ -150,3 +150,35 @@ def pseudo_random(seed, modulo):
     
     # Шаг 5: отбрасываем дробную часть, возвращаем целое
     return int(scaled)
+
+def trigger_trap(game_state):
+    """
+    Имитирует срабатывание ловушки с негативными последствиями для игрока.
+    
+    Если в инвентаре есть предметы — случайно теряется один.
+    Если инвентарь пуст — есть шанс получить смертельный урон.
+    
+    Args:
+        game_state (dict): состояние игры (включая инвентарь и флаг game_over)
+    """
+    print("Ловушка активирована! Пол стал дрожать... Вы применили свой фирменный кувырок. Просто потому что можете.")
+
+    
+    inventory = game_state['player_inventory']
+    steps = game_state['steps_taken']
+    
+    if inventory:
+        # В инвентаре есть предметы: теряем один случайно выбранный
+        num_items = len(inventory)
+        # Генерируем случайный индекс предмета (от 0 до num_items - 1)
+        lost_index = pseudo_random(steps, num_items)
+        lost_item = inventory.pop(lost_index)
+        print(f"Вы потеряли предмет: '{lost_item}'!")
+    else:
+        # Инвентарь пуст: проверяем шанс смертельного урона
+        damage_roll = pseudo_random(steps, 10)  # [0, 10)
+        if damage_roll < 3:  # 30 % шанс поражения (числа 0, 1, 2)
+            print("Пол обрушился! Вы упали в бездну... Игра окончена.")
+            game_state['game_over'] = True
+        else:
+            print("Вы чудом устояли на ногах! Ловушка не нанесла вреда.")
