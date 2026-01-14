@@ -1,5 +1,8 @@
 from labyrinth_game.constants import ROOMS
 from labyrinth_game.utils import describe_current_room
+from labyrinth_game.utils import pseudo_random
+from labyrinth_game.utils import trigger_trap
+from labyrinth_game.utils import random_event
 
 def show_inventory(game_state):
     inventory = game_state.get('player_inventory', [])
@@ -28,11 +31,13 @@ def move_player(game_state, direction):
         game_state['current_room'] = room_data['exits'][direction]
         game_state['steps_taken'] += 1
         describe_current_room(game_state)
+        random_event(game_state)
+        print('Шагов сделано: ', {game_state['steps_taken']}) #для наглядности, потом уберу        
         return True
     else:
         print("Нельзя пойти в этом направлении.")
         return False
-
+                 
 def take_item(game_state, item_name):
     """Подбирает предмет из комнаты."""
     current_room = game_state['current_room']

@@ -12,7 +12,6 @@ from labyrinth_game.player_actions import use_item
 
         
 def process_command(game_state, command_line):
-    """Обрабатывает команду игрока."""
      #Обрабатывает команду игрока.
     parts = command_line.split(' ', 1)
     action = parts[0]
@@ -67,12 +66,12 @@ def main():
     print("\nДобро пожаловать в Лабиринт сокровищ!\n")
     # Описываем стартовую комнату
     describe_current_room(game_state)
-    
+    """
     print("Тестирование pseudo_random:") #потому уберу тестирование
     for i in range(10):
         result = pseudo_random(i, 10)
         print(f"seed={i} → {result}")    
-            
+            """
     while not game_state['game_over']:
         command_line = get_input("> ")  # Считываем команду
         process_command(game_state, command_line)  # Обрабатываем

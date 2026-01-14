@@ -33,7 +33,6 @@ def describe_current_room(game_state):
         print('В этой комнате нет загадок')
     else:
         print("\nКажется, здесь есть загадка (используйте команду solve).")
-              
 
 def solve_puzzle(game_state):
     """Позволяет игроку решить загадку в текущей комнате."""
@@ -205,7 +204,7 @@ def random_event(game_state):
     steps = game_state['steps_taken']
     
     # Шаг 1. Проверяем, произойдёт ли событие вообще (вероятность ~10 %)
-    event_roll = pseudo_random(steps, 10)
+    event_roll = pseudo_random(steps, 20)  #временно поменял на 20
     if event_roll != 0:
         return  # Событие не произошло, выходим
 
@@ -229,7 +228,8 @@ def random_event(game_state):
                 print("Вы выхватываете меч — шорох затихает. Похоже, вы отпугнули существо.")
             elif 'crossbow' in game_state['player_inventory']:
                 print('Вы достаете арбалет и стеляете в темноту единственным болтом... Похоже, Вы отпугнули существо, но арбалет больше не поможет, Вы выбрасываете его')
-                game_state['player_inventory'].remove('crossbow')
+                game_state['player_inventory'].remove('crossbow') #убирает из инвентаря арбалет, т.к. там был 1 патрон
+        
         case 2:
             # Сценарий 3: Срабатывание ловушки в trap_room
             if current_room == 'trap_room' and 'torch' not in game_state['player_inventory']:
