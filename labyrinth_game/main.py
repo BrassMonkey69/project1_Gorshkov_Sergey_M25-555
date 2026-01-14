@@ -13,12 +13,14 @@ from labyrinth_game.player_actions import use_item
         
 def process_command(game_state, command_line):
      #Обрабатывает команду игрока.
+    
     parts = command_line.split(' ', 1)
-    action = parts[0]
+    action = parts[0].lower()
     arg = parts[1] if len(parts) > 1 else None
-    current_room = game_state['current_room']
-    room_data = ROOMS[current_room]
 
+    # Множество допустимых направлений для односложных команд
+    valid_directions = {'north', 'south', 'east', 'west'}
+    
     match action:
         case 'look' | 'l':
             describe_current_room(game_state)
@@ -28,7 +30,10 @@ def process_command(game_state, command_line):
             if arg:
                 move_player(game_state, arg)
             else:
-                print("Укажите направление (например, go north).")        
+                print("Укажите направление (например, go north).")
+        case dir if dir in valid_directions:
+            # Обработка односложной команды движения
+            move_player(game_state, dir)                
         case 'solve':
             if 'treasure_chest' not in room_data['items']: #проверка нахождения в комнате с сокровищем (treasure_chest)            
                 solve_puzzle(game_state)
