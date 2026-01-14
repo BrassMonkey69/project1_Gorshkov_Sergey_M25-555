@@ -1,4 +1,5 @@
 from labyrinth_game.constants import ROOMS
+from labyrinth_game.constants import COMMANDS
 import math
 
 
@@ -248,16 +249,12 @@ def attempt_open_treasure(game_state):
     if choice == 'нет':
         print("Вы отступаете от сундука.")
   
-    
 def show_help():
-    print("\nДоступные команды:")
-    print("  go <direction>  - перейти в направлении (north/south/east/west)")
-    print("  look/l          - осмотреть текущую комнату")
-    print("  take <item>     - поднять предмет")
-    print("  use <item>      - использовать предмет из инвентаря")
-    print("  inventory/i     - показать инвентарь")
-    print("  solve           - попытаться решить загадку в комнате")
-    print("  quit/exit/q     - выйти из игры")
-    print("  help            - показать это сообщение")
-    print("  open            - попытка открыть сундук сокровищ")
-  
+    """
+    Выводит список доступных команд с их описаниями.
+    Использует форматирование для красивого отображения.
+    """
+    print("\nДоступные команды:\n")
+    for command, description in COMMANDS.items():
+        print(f"{command:<16} — {description}")
+
