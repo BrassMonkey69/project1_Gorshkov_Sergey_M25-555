@@ -26,17 +26,33 @@ def move_player(game_state, direction):
     """Перемещает игрока в указанном направлении."""
     current_room = game_state['current_room']
     room_data = ROOMS[current_room]
-
-    if direction in room_data['exits']:
-        game_state['current_room'] = room_data['exits'][direction]
-        game_state['steps_taken'] += 1
-        describe_current_room(game_state)
-        random_event(game_state)
-        print('Шагов сделано: ', {game_state['steps_taken']}) #для наглядности, потом уберу        
-        return True
-    else:
+    next_room = room_data['exits'][direction]
+        # Проверяем, есть ли выход в указанном направлении
+    if direction not in room_data['exits']:
         print("Нельзя пойти в этом направлении.")
-        return False
+        return
+     
+    # Специальная проверка для treasure_room
+    if next_room == 'treasure_room':
+        if 'rusty_key' in game_state['player_inventory']:
+            print("Вы используете найденный ключ, чтобы открыть путь в комнату сокровищ.")
+            game_state['current_room'] = next_room
+            game_state['steps_taken'] += 1
+            describe_current_room(game_state)
+            print('Шагов сделано: ', {game_state['steps_taken']}) #для наглядности, потом уберу 
+            # Вызываем случайное событие после перемещения
+            random_event(game_state)
+        else:
+            print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
+        return
+    # Если не treasure_room — просто перемещаем игрока
+    game_state['current_room'] = next_room
+    game_state['steps_taken'] += 1
+    describe_current_room(game_state)
+    print('Шагов сделано: ', {game_state['steps_taken']}) #для наглядности, потом уберу 
+    # Вызываем случайное событие после перемещения
+    random_event(game_state)
+    return
                  
 def take_item(game_state, item_name):
     """Подбирает предмет из комнаты."""
