@@ -1,6 +1,7 @@
-from labyrinth_game.constants import ROOMS
-from labyrinth_game.constants import COMMANDS
+
 import math
+
+from labyrinth_game.constants import COMMANDS, ROOMS
 
 
 def describe_current_room(game_state):
@@ -30,7 +31,7 @@ def describe_current_room(game_state):
         print(f"  - {exit}")
     
     # Сообщение о загадке
-    if room_data['puzzle'] == None:
+    if room_data['puzzle'] is None:
         print('В этой комнате нет загадок')
     else:
         print("\nКажется, здесь есть загадка (используйте команду solve).")
@@ -138,8 +139,10 @@ def random_event(game_state):
             if 'sword' in game_state['player_inventory']:
                 print("Вы выхватываете меч — шорох затихает. Похоже, вы отпугнули существо.")
             elif 'crossbow' in game_state['player_inventory']:
-                print('Вы достаете арбалет и стеляете в темноту единственным болтом... Похоже, Вы отпугнули существо, но арбалет больше не поможет, Вы выбрасываете его')
-                game_state['player_inventory'].remove('crossbow') #убирает из инвентаря арбалет, т.к. там был 1 патрон
+                print('Вы достаете арбалет и стеляете в темноту единственным болтом... Похоже, Вы отпугнули \
+существо, но арбалет больше не поможет, Вы выбрасываете его')
+                #убирает из инвентаря арбалет, т.к. там был 1 патрон
+                game_state['player_inventory'].remove('crossbow') 
         
         case 2:
             # Сценарий 3: Срабатывание ловушки в trap_room
@@ -166,8 +169,10 @@ def solve_puzzle(game_state):
     if user_answer == correct_answer or alt_answer:
         if current_room == 'laboratory': #проверка нахождения в laboratory
             room_data['puzzle'] = None  # убираем загадку
-            print("Правильно! Вы решили загадку, Вы чувствуете себя без 5 минут профессором, будто извилины начали шевелиться активнее.")
-            print("В награду Вы получаете магистерскую шапочку с еле читаемой надписью 'Yan.....cum'. Не обращая внимания Вы надеваете шапку")
+            print("Правильно! Вы решили загадку, Вы чувствуете себя без 5 минут профессором, \
+будто извилины начали шевелиться активнее.")
+            print("В награду Вы получаете магистерскую шапочку с еле читаемой надписью 'Yan.....cum'.\
+Не обращая внимания Вы надеваете шапку")
             game_state['player_inventory'].append('academic_cap') #добавляет academic_cap в инвентарь
                     
         elif current_room == 'trap_room': #проверка нахождения в trap_room
@@ -178,7 +183,8 @@ def solve_puzzle(game_state):
             
         elif current_room == 'library': #проверка нахождения в library
             room_data['puzzle'] = None  # убираем загадку
-            print("Правильно! Вы решили загадку, внезапным порывом сквозняка с лежащей на полке книги сдуло слой пыли.")
+            print("Правильно! Вы решили загадку, внезапным порывом сквозняка с лежащей на\
+полке книги сдуло слой пыли.")
             print("Подойдя ближе, Вы обнаруживаете руководство с названием 'Черная магия для чайников'")
             game_state['player_inventory'].append('black_magic_guide') #добавляет black_magic_guide в инвентарь
             

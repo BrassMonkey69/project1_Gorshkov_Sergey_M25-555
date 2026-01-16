@@ -1,8 +1,6 @@
 from labyrinth_game.constants import ROOMS
-from labyrinth_game.utils import describe_current_room
-from labyrinth_game.utils import pseudo_random
-from labyrinth_game.utils import trigger_trap
-from labyrinth_game.utils import random_event
+from labyrinth_game.utils import describe_current_room, random_event
+
 
 def show_inventory(game_state):
     inventory = game_state.get('player_inventory', [])
@@ -84,7 +82,8 @@ def use_item(game_state, item_name):
         
     #использование treasure_key через команду "use treasure_key"
     elif item_name == 'treasure_key':
-        if game_state['current_room'] == 'treasure_room' and 'treasure_chest' in room_data['items']: #проверка нахождения в комнате treasure_room с сундуком treasure_chest
+        #проверка нахождения в комнате treasure_room с сундуком treasure_chest
+        if game_state['current_room'] == 'treasure_room' and 'treasure_chest' in room_data['items']: 
             print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
             room_data['items'].remove('treasure_chest') #убирает treasure_chest из комнаты
             print("В сундуке сокровище! Вы победили!")
@@ -96,7 +95,8 @@ def use_item(game_state, item_name):
     elif item_name == 'vial':
         inventory.remove(item_name) #убирает пробирку из инвентаря после использования
         inventory.append('empty_vial') #добавляет пустую пробирку в инвентарь
-        print('Невиданный прилив уверенности в себе, Вы чувствуете как внутри разливается тепло. Вы обнаруживаете полустертую надпись на дне:\nЧрезмерное употреб... ...едит Вашему здоровью.')
+        print('Невиданный прилив уверенности в себе, Вы чувствуете как внутри разливается тепло. \
+Вы обнаруживаете полустертую надпись на дне:\nЧрезмерное употреб... ...едит Вашему здоровью.')
     elif item_name == 'crossbow':
         print("Вы радуетесь как ребенок новой находке. Арбалет заряжен, но его хватит только на 1 выстрел.")
     elif item_name == 'bronze_box':

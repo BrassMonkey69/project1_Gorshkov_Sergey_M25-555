@@ -1,22 +1,16 @@
 from labyrinth_game.constants import ROOMS
-from labyrinth_game.utils import describe_current_room
-from labyrinth_game.utils import solve_puzzle
-from labyrinth_game.utils import attempt_open_treasure
-from labyrinth_game.utils import show_help
-from labyrinth_game.utils import pseudo_random
-from labyrinth_game.player_actions import show_inventory
-from labyrinth_game.player_actions import get_input
-from labyrinth_game.player_actions import move_player
-from labyrinth_game.player_actions import take_item
-from labyrinth_game.player_actions import use_item
+from labyrinth_game.player_actions import get_input, move_player, show_inventory, take_item, use_item
+from labyrinth_game.utils import attempt_open_treasure, describe_current_room, show_help, solve_puzzle
 
-        
+
 def process_command(game_state, command_line):
      #Обрабатывает команду игрока.
     
     parts = command_line.split(' ', 1)
     action = parts[0].lower()
     arg = parts[1] if len(parts) > 1 else None
+    current_room = game_state['current_room']
+    room_data = ROOMS[current_room]
 
     # Множество допустимых направлений для односложных команд
     valid_directions = {'north', 'south', 'east', 'west'}
@@ -35,7 +29,7 @@ def process_command(game_state, command_line):
             # Обработка односложной команды движения
             move_player(game_state, dir)                
         case 'solve':
-            if 'treasure_chest' not in room_data['items']: #проверка нахождения в комнате с сокровищем (treasure_chest)            
+            if 'treasure_chest' not in room_data['items']: #проверка нахождения в комнате с сокровищем (treasure_chest)
                 solve_puzzle(game_state)
             else:
                 attempt_open_treasure(game_state) #срабатывает при нахождении с сокровищами          
